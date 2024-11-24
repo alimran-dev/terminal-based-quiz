@@ -1,0 +1,62 @@
+admin@gmail.com|||What is the capital of France?|||Paris|||London|||Berlin|||Madrid|||1
+admin@gmail.com|||Which planet is known as the Red Planet?|||Earth|||Mars|||Jupiter|||Saturn|||2
+admin@gmail.com|||What is 5 + 3?|||5|||7|||8|||10|||3
+admin@gmail.com|||Who wrote "Romeo and Juliet"?|||Charles Dickens|||William Shakespeare|||J.K. Rowling|||Ernest Hemingway|||2
+admin@gmail.com|||What is the largest ocean on Earth?|||Atlantic Ocean|||Indian Ocean|||Arctic Ocean|||Pacific Ocean|||4
+admin@gmail.com|||How many continents are there?|||5|||6|||7|||8|||3
+admin@gmail.com|||What is the boiling point of water in Celsius?|||90|||100|||110|||120|||2
+admin@gmail.com|||Which is the largest animal on Earth?|||Elephant|||Shark|||Blue Whale|||Polar Bear|||3
+admin@gmail.com|||What is the square root of 16?|||2|||4|||6|||8|||2
+admin@gmail.com|||Which element has the chemical symbol O?|||Oxygen|||Gold|||Silver|||Iron|||1
+admin@gmail.com|||Who painted the Mona Lisa?|||Vincent van Gogh|||Pablo Picasso|||Leonardo da Vinci|||Claude Monet|||3
+admin@gmail.com|||What is the speed of light?|||300,000 km/s|||500,000 km/s|||700,000 km/s|||1,000,000 km/s|||1
+admin@gmail.com|||What is the capital of Japan?|||Seoul|||Tokyo|||Beijing|||Hanoi|||2
+admin@gmail.com|||How many sides does a triangle have?|||3|||4|||5|||6|||1
+admin@gmail.com|||Which country is famous for the Eiffel Tower?|||USA|||France|||Italy|||England|||2
+admin@gmail.com|||Which is the smallest planet in our solar system?|||Mercury|||Venus|||Earth|||Mars|||1
+admin@gmail.com|||What is the chemical symbol for water?|||CO2|||H2O|||O2|||N2|||2
+admin@gmail.com|||Who was the first President of the United States?|||George Washington|||Thomas Jefferson|||Abraham Lincoln|||John Adams|||1
+admin@gmail.com|||What is the capital of Italy?|||Paris|||London|||Rome|||Madrid|||3
+admin@gmail.com|||Which month comes after September?|||October|||November|||December|||August|||1
+admin@gmail.com|||Which animal is known as the King of the Jungle?|||Lion|||Tiger|||Elephant|||Leopard|||1
+admin@gmail.com|||What color do you get when you mix red and blue?|||Purple|||Green|||Orange|||Yellow|||1
+admin@gmail.com|||What is 10 + 15?|||20|||25|||30|||35|||2
+admin@gmail.com|||Who discovered America?|||Christopher Columbus|||Leif Erikson|||Ferdinand Magellan|||Marco Polo|||1
+admin@gmail.com|||What is the main ingredient in guacamole?|||Tomato|||Avocado|||Cucumber|||Lettuce|||2
+admin@gmail.com|||Which is the tallest mountain in the world?|||Mount Everest|||Mount Kilimanjaro|||Mount Fuji|||Mount McKinley|||1
+admin@gmail.com|||What is the largest country by area?|||Russia|||China|||USA|||Canada|||1
+admin@gmail.com|||Which fruit is known for having seeds on the outside?|||Strawberry|||Apple|||Banana|||Orange|||1
+admin@gmail.com|||How many hours are in a day?|||12|||24|||48|||60|||2
+admin@gmail.com|||What is the currency of Japan?|||Yuan|||Yen|||Won|||Ringgit|||2
+admin@gmail.com|||Which animal is known for its ability to change color?|||Chameleon|||Frog|||Turtle|||Lizard|||1
+admin@gmail.com|||What is the capital of Australia?|||Sydney|||Melbourne|||Canberra|||Perth|||3
+admin@gmail.com|||How many legs does a spider have?|||6|||8|||10|||12|||2
+admin@gmail.com|||Which is the longest river in the world?|||Amazon River|||Nile River|||Yangtze River|||Mississippi River|||2
+admin@gmail.com|||What is the fastest land animal?|||Cheetah|||Lion|||Tiger|||Leopard|||1
+admin@gmail.com|||Which fruit is yellow when ripe?|||Apple|||Banana|||Orange|||Strawberry|||2
+admin@gmail.com|||What is 6 multiplied by 7?|||32|||42|||52|||62|||2
+admin@gmail.com|||Who invented the lightbulb?|||Thomas Edison|||Alexander Graham Bell|||Nikola Tesla|||Albert Einstein|||1
+admin@gmail.com|||Which country is known for sushi?|||China|||Japan|||India|||South Korea|||2
+admin@gmail.com|||Which shape has four equal sides?|||Triangle|||Square|||Rectangle|||Circle|||2
+admin@gmail.com|||Who is the author of "Harry Potter"?|||J.R.R. Tolkien|||J.K. Rowling|||George R.R. Martin|||Agatha Christie|||2
+admin@gmail.com|||What is the primary color of the sky on a clear day?|||Blue|||Red|||Green|||Yellow|||1
+admin@gmail.com|||What is the national language of Brazil?|||Spanish|||French|||Portuguese|||English|||3
+admin@gmail.com|||What is the main source of energy for the human body?|||Fat|||Carbohydrates|||Proteins|||Vitamins|||2
+admin@gmail.com|||Which bird is known for its ability to mimic human speech?|||Parrot|||Eagle|||Owl|||Sparrow|||1
+admin@gmail.com|||How many minutes are in an hour?|||30|||45|||60|||90|||3
+admin@gmail.com|||What is the largest desert in the world?|||Sahara Desert|||Gobi Desert|||Arabian Desert|||Antarctic Desert|||4
+admin@gmail.com|||Which planet is closest to the sun?|||Mercury|||Venus|||Earth|||Mars|||1
+admin@gmail.com|||Which country invented pizza?|||Italy|||France|||Germany|||USA|||1
+admin@gmail.com|||How many planets are in our solar system?|||7|||8|||9|||10|||2
+admin@gmail.com|||What is the symbol for gold on the periodic table?|||Au|||Ag|||Fe|||Cu|||1
+admin@gmail.com|||What is the capital of Canada?|||Toronto|||Ottawa|||Vancouver|||Montreal|||2
+admin@gmail.com|||What is the largest continent?|||Asia|||Europe|||North America|||South America|||1
+admin@gmail.com|||Which is the smallest continent?|||Antarctica|||Australia|||Europe|||Asia|||2
+admin@gmail.com|||Which number is known as a prime number?|||4|||5|||6|||8|||2
+admin@gmail.com|||What is the freezing point of water?|||0°C|||5°C|||−1°C|||10°C|||1
+admin@gmail.com|||Which metal is liquid at room temperature?|||Mercury|||Iron|||Gold|||Silver|||1
+admin@gmail.com|||What is the tallest building in the world?|||Eiffel Tower|||Empire State Building|||Burj Khalifa|||Shanghai Tower|||3
+admin@gmail.com|||What is the currency of the USA?|||Euro|||Won|||USD|||Pound|||3
+admin@gmail.com|||What is the largest type of bear?|||Grizzly Bear|||Panda Bear|||Kodiak Bear|||Polar Bear|||3
+admin@gmail.com|||Which ocean lies between Africa and Australia?|||Atlantic Ocean|||Indian Ocean|||Arctic Ocean|||Pacific Ocean|||2
+admin@gmail.com|||What is the main color of a giraffe's spots?|||Brown|||Black|||White|||Orange|||1

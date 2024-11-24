@@ -1,6 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <chrono>
+#include <vector>
+#include <ctime>
+#include <cstdlib>
+#include <algorithm>
+#include <random>
 using namespace std;
 
 // declared functions
@@ -12,9 +19,116 @@ void signup_user();
 void logged_in_user(string email, string name, string user_role, int user_participation);
 void logged_in_admin(string email, string name, string user_role, int added_quiz_count);
 void take_quiz();
+vector<string> split(const string &s, const string &delimiter);
 
-void take_quiz(){
-    
+
+
+// all function definition
+vector<string> split(const string &s, const string &delimiter) {
+    vector<string> tokens;
+    size_t start = 0;
+    size_t end = s.find(delimiter);
+    while (end != string::npos) {
+        tokens.push_back(s.substr(start, end - start));
+        start = end + delimiter.length();
+        end = s.find(delimiter, start);
+    }
+    tokens.push_back(s.substr(start));
+    return tokens;
+}
+void take_quiz()
+{
+    ifstream quiz_file("quiz.txt");
+    vector<string> questions;
+    string line;
+
+    // Read all questions from the file
+    while (getline(quiz_file, line))
+    {
+        questions.push_back(line);
+    }
+    quiz_file.close();
+
+    // Check if there are enough questions
+    if (questions.size() < 10)
+    {
+        cout << "Not enough questions in the file." << endl;
+        return;
+    }
+
+    // Seed the random number generator
+    random_device rd;
+    mt19937 eng(rd());
+
+    // Shuffle the questions
+    shuffle(questions.begin(), questions.end(), eng);
+
+    // Select the first 20 questions
+    vector<string> selected_questions(questions.begin(), questions.begin() + 10);
+
+    int total_score = 0;
+    int total_questions = selected_questions.size();
+
+    // Start timing
+    auto start_time = chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < total_questions; i++)
+    {
+        vector<string> question_parts=split(selected_questions[i],"|||");
+        // if(question_parts.size()!=6)
+        string email=question_parts[0];
+        string question=question_parts[1];
+        string option1=question_parts[2];
+        string option2=question_parts[3];
+        string option3=question_parts[4];
+        string option4=question_parts[5];
+        int correct_answer=stoi(question_parts[6]);
+
+        
+
+        // Display the question and options
+        cout << "Question " << (i + 1) << ": " << question << endl;
+        cout << "1. " << option1 << endl;
+        cout << "2. " << option2 << endl;
+        cout << "3. " << option3 << endl;
+        cout << "4. " << option4 << endl;
+
+        // Get user answer
+        int user_answer;
+        while (true)
+        {
+            cout << "Your answer (1-4): ";
+            cin >> user_answer;
+
+            // Check if the answer is correct
+            if (user_answer == correct_answer)
+            {
+                cout << "Correct!" << endl;
+                total_score++;
+                break;
+            }
+            else if (user_answer > 4 || user_answer < 1)
+            {
+                cout << "Please select an option from 1 to 4." << endl;
+            }
+            else
+            {
+                cout << "Wrong! The correct answer was option " << correct_answer << "." << endl;
+                break;
+            }
+        }
+
+        cout << endl;
+    }
+
+    // End timing
+    auto end_time = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::milliseconds>(end_time - start_time).count();
+
+    // Display total score and time taken
+    cout << "You completed the quiz!" << endl;
+    cout << "Your score: " << total_score << "/" << total_questions << endl;
+    cout << "Total time taken: " << duration << " milliseconds." << endl;
 }
 void logged_in_user(string email, string name, string user_role, int user_participation)
 {
@@ -29,7 +143,8 @@ void logged_in_user(string email, string name, string user_role, int user_partic
     cout << "1. Take Quiz" << endl;
     cout << "2. My History" << endl;
     cout << "3. Leaderboard" << endl;
-    cout << "4. Sign Out" << endl<<endl;
+    cout << "4. Sign Out" << endl
+         << endl;
     int option;
     while (true)
     {
@@ -37,6 +152,9 @@ void logged_in_user(string email, string name, string user_role, int user_partic
         cin >> option;
         if (option == 1)
         {
+            clear_screen();
+            take_quiz();
+            break;
         }
         else if (option == 2)
         {
