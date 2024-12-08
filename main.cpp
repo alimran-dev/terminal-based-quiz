@@ -18,17 +18,27 @@ void login_user();
 void signup_user();
 void logged_in_user(string email, string name, string user_role, int user_participation);
 void logged_in_admin(string email, string name, string user_role, int added_quiz_count);
-void take_quiz();
+void take_quiz(string email);
 vector<string> split(const string &s, const string &delimiter);
-
-
+void leaderboard();
+void my_history();
 
 // all function definition
-vector<string> split(const string &s, const string &delimiter) {
+void my_history()
+{
+    
+}
+void leaderboard()
+{
+
+}
+vector<string> split(const string &s, const string &delimiter)
+{
     vector<string> tokens;
     size_t start = 0;
     size_t end = s.find(delimiter);
-    while (end != string::npos) {
+    while (end != string::npos)
+    {
         tokens.push_back(s.substr(start, end - start));
         start = end + delimiter.length();
         end = s.find(delimiter, start);
@@ -36,7 +46,7 @@ vector<string> split(const string &s, const string &delimiter) {
     tokens.push_back(s.substr(start));
     return tokens;
 }
-void take_quiz()
+void take_quiz(string email)
 {
     ifstream quiz_file("quiz.txt");
     vector<string> questions;
@@ -50,7 +60,7 @@ void take_quiz()
     quiz_file.close();
 
     // Check if there are enough questions
-    if (questions.size() < 10)
+    if (questions.size() < 2)
     {
         cout << "Not enough questions in the file." << endl;
         return;
@@ -64,7 +74,7 @@ void take_quiz()
     shuffle(questions.begin(), questions.end(), eng);
 
     // Select the first 20 questions
-    vector<string> selected_questions(questions.begin(), questions.begin() + 10);
+    vector<string> selected_questions(questions.begin(), questions.begin() + 2);
 
     int total_score = 0;
     int total_questions = selected_questions.size();
@@ -74,17 +84,15 @@ void take_quiz()
 
     for (int i = 0; i < total_questions; i++)
     {
-        vector<string> question_parts=split(selected_questions[i],"|||");
+        vector<string> question_parts = split(selected_questions[i], "|||");
         // if(question_parts.size()!=6)
-        string email=question_parts[0];
-        string question=question_parts[1];
-        string option1=question_parts[2];
-        string option2=question_parts[3];
-        string option3=question_parts[4];
-        string option4=question_parts[5];
-        int correct_answer=stoi(question_parts[6]);
-
-        
+        string email = question_parts[0];
+        string question = question_parts[1];
+        string option1 = question_parts[2];
+        string option2 = question_parts[3];
+        string option3 = question_parts[4];
+        string option4 = question_parts[5];
+        int correct_answer = stoi(question_parts[6]);
 
         // Display the question and options
         cout << "Question " << (i + 1) << ": " << question << endl;
@@ -129,6 +137,46 @@ void take_quiz()
     cout << "You completed the quiz!" << endl;
     cout << "Your score: " << total_score << "/" << total_questions << endl;
     cout << "Total time taken: " << duration << " milliseconds." << endl;
+
+    // Update the user's participation count
+    ifstream user_file("users.txt");
+    vector<string> users;
+    string user_line;
+    int participation_count = 0;
+
+    // Read all users and find the current user
+    while (getline(user_file, user_line))
+    {
+        if (user_line.find(email) == 0)
+        {
+            int last_comma = user_line.rfind(',');
+            participation_count = stoi(user_line.substr(last_comma + 1)) + 1;
+            user_line = user_line.substr(0, last_comma + 1) + to_string(participation_count);
+        }
+        users.push_back(user_line);
+    }
+    user_file.close();
+
+    // Write the updated user data back to the file
+    ofstream user_file_out("users.txt");
+    for (const auto &u : users)
+    {
+        user_file_out << u << endl;
+    }
+    user_file_out.close();
+
+    // Save the quiz result to history.txt
+    ofstream history_file("history.txt", ios::app);
+    if (history_file.is_open())
+    {
+        time_t date = time(0);
+        history_file << email << "|||" << date << "|||" << total_score << "|||" << total_questions << "|||" << duration << endl;
+        history_file.close();
+    }
+    else
+    {
+        cout << "Unable to open history file for writing." << endl;
+    }
 }
 void logged_in_user(string email, string name, string user_role, int user_participation)
 {
@@ -153,7 +201,7 @@ void logged_in_user(string email, string name, string user_role, int user_partic
         if (option == 1)
         {
             clear_screen();
-            take_quiz();
+            take_quiz(email);
             break;
         }
         else if (option == 2)
@@ -161,6 +209,9 @@ void logged_in_user(string email, string name, string user_role, int user_partic
         }
         else if (option == 3)
         {
+            clear_screen();
+            leaderboard();
+            break;
         }
         else if (option == 4)
         {
@@ -247,7 +298,7 @@ void signup_user()
     ofstream user_file("users.txt", ios::app);
     if (user_file.is_open())
     {
-        user_file << email << "," << password << "," << name << "," << "user" << endl;
+        user_file << email << "," << password << "," << name << "," << "user,0" << endl;
         user_file.close();
         cout << "Signup successful! You can now login." << endl;
     }
@@ -291,6 +342,8 @@ void home_options()
         }
         else if (option == 3)
         {
+            leaderboard();
+            break;
         }
         else if (option == 0)
         {
