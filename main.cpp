@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <algorithm>
 #include <random>
+#include <iomanip>
+#include <unordered_map>
 using namespace std;
 
 // declared functions
@@ -24,13 +26,75 @@ void leaderboard();
 void my_history();
 
 // all function definition
+struct LeaderboardEntry {
+    string email;
+    int totalCorrectAnswers;
+    int totalQuestions;
+    long long totalDuration; // Total duration in milliseconds
+};
 void my_history()
 {
-    
 }
-void leaderboard()
-{
+void leaderboard() {
+    ifstream history_file("history.txt");
+    if (!history_file.is_open()) {
+        cout << "Unable to open history file." << endl;
+        return;
+    }
 
+    unordered_map<string, LeaderboardEntry> leaderboard_map;
+    string line;
+
+    // Read and parse the history file
+    while (getline(history_file, line)) {
+        vector<string> parts = split(line, "|||");
+        if (parts.size() == 5) {
+            string email = parts[0];
+            int correctAnswers = stoi(parts[2]);
+            int totalQuestions = stoi(parts[3]);
+            long long duration = stoll(parts[4]);
+
+            // Aggregate results for each participant
+            if (leaderboard_map.find(email) == leaderboard_map.end()) {
+                leaderboard_map[email] = {email, correctAnswers, totalQuestions, duration};
+            } else {
+                leaderboard_map[email].totalCorrectAnswers += correctAnswers;
+                leaderboard_map[email].totalQuestions += totalQuestions;
+                leaderboard_map[email].totalDuration += duration;
+            }
+        }
+    }
+    history_file.close();
+
+    // Prepare a vector for sorting
+    vector<LeaderboardEntry> leaderboard_data;
+    for (const auto &entry : leaderboard_map) {
+        leaderboard_data.push_back(entry.second);
+    }
+
+    // Sort the leaderboard data based on average time per question (ascending order)
+    sort(leaderboard_data.begin(), leaderboard_data.end(), [](const LeaderboardEntry &a, const LeaderboardEntry &b) {
+        double avgTimeA = (a.totalQuestions > 0) ? static_cast<double>(a.totalDuration) / a.totalQuestions : numeric_limits<double>::max();
+        double avgTimeB = (b.totalQuestions > 0) ? static_cast<double>(b.totalDuration) / b.totalQuestions : numeric_limits<double>::max();
+        return avgTimeA < avgTimeB; // Compare based on average time per question
+    });
+
+    // Display the leaderboard
+    cout << "************************************************" << endl;
+    cout << "                   Leaderboard                   " << endl;
+    cout << "************************************************" << endl;
+    cout << "Email                      | Correct | Total | Avg Time (ms)" << endl;
+    cout << "------------------------------------------------" << endl;
+
+    for (const auto &entry : leaderboard_data) {
+        double avgTime = (entry.totalQuestions > 0) ? static_cast<double>(entry.totalDuration) / entry.totalQuestions : 0.0;
+        cout << left << setw(25) << entry.email // Email
+             << "| " << setw(8) << entry.totalCorrectAnswers // Correct answers
+             << "| " << setw(6) << entry.totalQuestions // Total questions
+             << "| " << fixed << setprecision(2) << avgTime << endl; // Average time
+    }
+
+    cout << "************************************************" << endl;
 }
 vector<string> split(const string &s, const string &delimiter)
 {
@@ -342,6 +406,7 @@ void home_options()
         }
         else if (option == 3)
         {
+            clear_screen();
             leaderboard();
             break;
         }
