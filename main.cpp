@@ -23,7 +23,7 @@ void logged_in_admin(string email, string name, string user_role, int added_quiz
 void take_quiz(string email);
 vector<string> split(const string &s, const string &delimiter);
 void leaderboard();
-void my_history();
+void my_history(string email);
 
 // all function definition
 struct LeaderboardEntry {
@@ -32,8 +32,46 @@ struct LeaderboardEntry {
     int totalQuestions;
     long long totalDuration; // Total duration in milliseconds
 };
-void my_history()
+void my_history(string email)
 {
+    ifstream history_file("history.txt");
+    if (!history_file.is_open()) {
+        cout << "Unable to open history file." << endl;
+        return;
+    }
+
+    string line;
+    vector<string> history;
+    while(getline(history_file, line)){
+        vector<string> parts= split(line, "|||");
+        if(parts.size()==5){
+            string emailInLine=parts[0];
+            if(email==emailInLine)
+            {
+                history.push_back(line);
+            }
+        }
+    }
+    cout<<"*********************************************"<<endl;
+    cout<<"                  My history                 "<<endl;
+    cout<<"              Email: "<<email<<endl;
+    cout<<"              Total Participation: "<<history.size()<<endl;
+    cout<<"*********************************************"<<endl;
+    cout<<"Date         |       Correct     |       Total       |       Duration    "<<endl;
+
+    for(string line:history)
+    {
+        vector<string> parts=split(line, "|||");
+        if(parts.size()==5){
+            string emailInLine=parts[0];
+            long long date=stoll(parts[1]);
+            int correctAnswers = stoi(parts[2]);
+            int totalQuestions = stoi(parts[3]);
+            long long duration = stoll(parts[4]);
+            cout<<date<<"   |   "<<correctAnswers<<"    |   "<<totalQuestions<<"    |   "<<duration<<endl;
+        }
+    }
+
 }
 void leaderboard() {
     ifstream history_file("history.txt");
@@ -131,8 +169,7 @@ void take_quiz(string email)
     }
 
     // Seed the random number generator
-    random_device rd;
-    mt19937 eng(rd());
+    mt19937 eng(static_cast<unsigned int>(time(0)));
 
     // Shuffle the questions
     shuffle(questions.begin(), questions.end(), eng);
@@ -270,6 +307,9 @@ void logged_in_user(string email, string name, string user_role, int user_partic
         }
         else if (option == 2)
         {
+            clear_screen();
+            my_history(email);
+            break;
         }
         else if (option == 3)
         {
