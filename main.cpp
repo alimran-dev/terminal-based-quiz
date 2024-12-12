@@ -20,13 +20,14 @@ void login_user();
 void signup_user();
 void logged_in_user(string email, string name, string user_role, int user_participation);
 void logged_in_admin(string email, string name, string user_role, int added_quiz_count);
-void take_quiz(string email);
+void take_quiz(string email, string name, string user_role, int user_participation);
 vector<string> split(const string &s, const string &delimiter);
 void leaderboard();
 void my_history(string email);
 
 // all function definition
-struct LeaderboardEntry {
+struct LeaderboardEntry
+{
     string email;
     int totalCorrectAnswers;
     int totalQuestions;
@@ -35,47 +36,56 @@ struct LeaderboardEntry {
 void my_history(string email)
 {
     ifstream history_file("history.txt");
-    if (!history_file.is_open()) {
+    if (!history_file.is_open())
+    {
         cout << "Unable to open history file." << endl;
         return;
     }
 
     string line;
     vector<string> history;
-    while(getline(history_file, line)){
-        vector<string> parts= split(line, "|||");
-        if(parts.size()==5){
-            string emailInLine=parts[0];
-            if(email==emailInLine)
+    while (getline(history_file, line))
+    {
+        vector<string> parts = split(line, "|||");
+        if (parts.size() == 5)
+        {
+            string emailInLine = parts[0];
+            if (email == emailInLine)
             {
                 history.push_back(line);
             }
         }
     }
-    cout<<"*********************************************"<<endl;
-    cout<<"                  My history                 "<<endl;
-    cout<<"              Email: "<<email<<endl;
-    cout<<"              Total Participation: "<<history.size()<<endl;
-    cout<<"*********************************************"<<endl;
-    cout<<"Date         |       Correct     |       Total       |       Duration    "<<endl;
+    cout << "***********************************************************" << endl;
+    cout << "                       My history                 " << endl;
+    cout << "                   Email: " << email << endl;
+    cout << "                   Total Participation: " << history.size() << endl;
+    cout << "***********************************************************" << endl;
+    cout << "Date         |    Correct   |    Total    |    Duration " << endl;
 
-    for(string line:history)
+    for (string line : history)
     {
-        vector<string> parts=split(line, "|||");
-        if(parts.size()==5){
-            string emailInLine=parts[0];
-            long long date=stoll(parts[1]);
+        vector<string> parts = split(line, "|||");
+        if (parts.size() == 5)
+        {
+            string emailInLine = parts[0];
+            long long date = stoll(parts[1]);
             int correctAnswers = stoi(parts[2]);
             int totalQuestions = stoi(parts[3]);
             long long duration = stoll(parts[4]);
-            cout<<date<<"   |   "<<correctAnswers<<"    |   "<<totalQuestions<<"    |   "<<duration<<endl;
+            tm *localTime = localtime(&date);
+            int day = localTime->tm_mday;
+            int month = localTime->tm_mon + 1;
+            int year = localTime->tm_year + 1900;
+            cout << day << "/" << month << "/" << year << "   |       " << correctAnswers << "      |      " << totalQuestions << "      |     " << (double)duration / 1000 << "s" << endl;
         }
     }
-
 }
-void leaderboard() {
+void leaderboard()
+{
     ifstream history_file("history.txt");
-    if (!history_file.is_open()) {
+    if (!history_file.is_open())
+    {
         cout << "Unable to open history file." << endl;
         return;
     }
@@ -84,18 +94,23 @@ void leaderboard() {
     string line;
 
     // Read and parse the history file
-    while (getline(history_file, line)) {
+    while (getline(history_file, line))
+    {
         vector<string> parts = split(line, "|||");
-        if (parts.size() == 5) {
+        if (parts.size() == 5)
+        {
             string email = parts[0];
             int correctAnswers = stoi(parts[2]);
             int totalQuestions = stoi(parts[3]);
             long long duration = stoll(parts[4]);
 
             // Aggregate results for each participant
-            if (leaderboard_map.find(email) == leaderboard_map.end()) {
+            if (leaderboard_map.find(email) == leaderboard_map.end())
+            {
                 leaderboard_map[email] = {email, correctAnswers, totalQuestions, duration};
-            } else {
+            }
+            else
+            {
                 leaderboard_map[email].totalCorrectAnswers += correctAnswers;
                 leaderboard_map[email].totalQuestions += totalQuestions;
                 leaderboard_map[email].totalDuration += duration;
@@ -106,33 +121,37 @@ void leaderboard() {
 
     // Prepare a vector for sorting
     vector<LeaderboardEntry> leaderboard_data;
-    for (const auto &entry : leaderboard_map) {
+    for (const auto &entry : leaderboard_map)
+    {
         leaderboard_data.push_back(entry.second);
     }
 
     // Sort the leaderboard data based on average time per question (ascending order)
-    sort(leaderboard_data.begin(), leaderboard_data.end(), [](const LeaderboardEntry &a, const LeaderboardEntry &b) {
+    sort(leaderboard_data.begin(), leaderboard_data.end(), [](const LeaderboardEntry &a, const LeaderboardEntry &b)
+         {
         double avgTimeA = (a.totalQuestions > 0) ? static_cast<double>(a.totalDuration) / a.totalQuestions : numeric_limits<double>::max();
         double avgTimeB = (b.totalQuestions > 0) ? static_cast<double>(b.totalDuration) / b.totalQuestions : numeric_limits<double>::max();
-        return avgTimeA < avgTimeB; // Compare based on average time per question
-    });
+        double priorityA=a.totalCorrectAnswers/a.totalQuestions*avgTimeA;
+        double priorityB=b.totalCorrectAnswers/b.totalQuestions*avgTimeB;
+        return priorityA < priorityB; });
 
     // Display the leaderboard
-    cout << "************************************************" << endl;
-    cout << "                   Leaderboard                   " << endl;
-    cout << "************************************************" << endl;
-    cout << "Email                      | Correct | Total | Avg Time (ms)" << endl;
-    cout << "------------------------------------------------" << endl;
+    cout << "************************************************************" << endl;
+    cout << "                         Leaderboard                   " << endl;
+    cout << "************************************************************" << endl;
+    cout << "Email                    | Correct | Total | Avg Time (s)" << endl;
+    cout << "------------------------------------------------------------" << endl;
 
-    for (const auto &entry : leaderboard_data) {
+    for (const auto &entry : leaderboard_data)
+    {
         double avgTime = (entry.totalQuestions > 0) ? static_cast<double>(entry.totalDuration) / entry.totalQuestions : 0.0;
-        cout << left << setw(25) << entry.email // Email
-             << "| " << setw(8) << entry.totalCorrectAnswers // Correct answers
-             << "| " << setw(6) << entry.totalQuestions // Total questions
-             << "| " << fixed << setprecision(2) << avgTime << endl; // Average time
+        cout << left << setw(25) << entry.email                                                                        // Email
+             << "| " << setw(8) << entry.totalCorrectAnswers                                                           // Correct answers
+             << "| " << setw(6) << entry.totalQuestions                                                                // Total questions
+             << "| " << fixed << setprecision(2) << fixed << setprecision(3) << (double)avgTime / 1000 << "s" << endl; // Average time
     }
 
-    cout << "************************************************" << endl;
+    cout << "************************************************************" << endl;
 }
 vector<string> split(const string &s, const string &delimiter)
 {
@@ -148,7 +167,7 @@ vector<string> split(const string &s, const string &delimiter)
     tokens.push_back(s.substr(start));
     return tokens;
 }
-void take_quiz(string email)
+void take_quiz(string email, string name, string user_role, int user_participation)
 {
     ifstream quiz_file("quiz.txt");
     vector<string> questions;
@@ -237,7 +256,7 @@ void take_quiz(string email)
     // Display total score and time taken
     cout << "You completed the quiz!" << endl;
     cout << "Your score: " << total_score << "/" << total_questions << endl;
-    cout << "Total time taken: " << duration << " milliseconds." << endl;
+    cout << "Total time taken: " << (double)duration / 1000 << " seconds." << endl;
 
     // Update the user's participation count
     ifstream user_file("users.txt");
@@ -278,6 +297,20 @@ void take_quiz(string email)
     {
         cout << "Unable to open history file for writing." << endl;
     }
+    while (true)
+    {
+        cout << endl
+             << endl
+             << "Press 0 for home screen: ";
+        int x;
+        cin >> x;
+        if (x == 0)
+        {
+            clear_screen();
+            logged_in_user(email, name, user_role, user_participation + 1);
+            break;
+        }
+    }
 }
 void logged_in_user(string email, string name, string user_role, int user_participation)
 {
@@ -302,23 +335,54 @@ void logged_in_user(string email, string name, string user_role, int user_partic
         if (option == 1)
         {
             clear_screen();
-            take_quiz(email);
+            take_quiz(email, name, user_role, user_participation);
             break;
         }
         else if (option == 2)
         {
             clear_screen();
             my_history(email);
+            while (true)
+            {
+                cout << endl
+                     << endl
+                     << "Press 0 for home screen: ";
+                int x;
+                cin >> x;
+                if (x == 0)
+                {
+                    clear_screen();
+                    logged_in_user(email, name, user_role, user_participation);
+                    break;
+                }
+            }
             break;
         }
         else if (option == 3)
         {
             clear_screen();
             leaderboard();
+            while (true)
+            {
+                cout << endl
+                     << endl
+                     << "Press 0 for home screen: ";
+                int x;
+                cin >> x;
+                if (x == 0)
+                {
+                    clear_screen();
+                    logged_in_user(email, name, user_role, user_participation);
+                    break;
+                }
+            }
             break;
         }
         else if (option == 4)
         {
+            clear_screen();
+            welcome_message();
+            home_options();
             break;
         }
         else
@@ -448,6 +512,21 @@ void home_options()
         {
             clear_screen();
             leaderboard();
+            while (true)
+            {
+                cout << endl
+                     << endl
+                     << "Press 0 for home screen: ";
+                int x;
+                cin >> x;
+                if (x == 0)
+                {
+                    clear_screen();
+                    welcome_message();
+                    home_options();
+                    break;
+                }
+            }
             break;
         }
         else if (option == 0)
