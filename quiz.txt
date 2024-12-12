@@ -53,7 +53,6 @@ admin@gmail.com|||What is the capital of Canada?|||Toronto|||Ottawa|||Vancouver|
 admin@gmail.com|||What is the largest continent?|||Asia|||Europe|||North America|||South America|||1
 admin@gmail.com|||Which is the smallest continent?|||Antarctica|||Australia|||Europe|||Asia|||2
 admin@gmail.com|||Which number is known as a prime number?|||4|||5|||6|||8|||2
-admin@gmail.com|||What is the freezing point of water?|||0°C|||5°C|||−1°C|||10°C|||1
 admin@gmail.com|||Which metal is liquid at room temperature?|||Mercury|||Iron|||Gold|||Silver|||1
 admin@gmail.com|||What is the tallest building in the world?|||Eiffel Tower|||Empire State Building|||Burj Khalifa|||Shanghai Tower|||3
 admin@gmail.com|||What is the currency of the USA?|||Euro|||Won|||USD|||Pound|||3
