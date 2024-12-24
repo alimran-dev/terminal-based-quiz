@@ -449,6 +449,7 @@ void login_user()
     else
     {
         cout << "Invalid email or password. Please try again." << endl;
+        login_user();
     }
 }
 void signup_user()
@@ -506,6 +507,21 @@ void home_options()
         else if (option == 2)
         {
             signup_user();
+            while (true)
+            {
+                cout << endl
+                     << endl
+                     << "Press 0 for home screen: ";
+                int x;
+                cin >> x;
+                if (x == 0)
+                {
+                    clear_screen();
+                    welcome_message();
+                    home_options();
+                    break;
+                }
+            }
             break;
         }
         else if (option == 3)
