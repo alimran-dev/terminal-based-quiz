@@ -69,7 +69,7 @@ void my_history(string email)
         if (parts.size() == 5)
         {
             string emailInLine = parts[0];
-            long long date = stoll(parts[1]);
+            time_t date = stoll(parts[1]);
             int correctAnswers = stoi(parts[2]);
             int totalQuestions = stoi(parts[3]);
             long long duration = stoll(parts[4]);
@@ -131,8 +131,8 @@ void leaderboard()
          {
         double avgTimeA = (a.totalQuestions > 0) ? static_cast<double>(a.totalDuration) / a.totalQuestions : numeric_limits<double>::max();
         double avgTimeB = (b.totalQuestions > 0) ? static_cast<double>(b.totalDuration) / b.totalQuestions : numeric_limits<double>::max();
-        double priorityA=a.totalCorrectAnswers/a.totalQuestions*avgTimeA;
-        double priorityB=b.totalCorrectAnswers/b.totalQuestions*avgTimeB;
+        double priorityA=(a.totalCorrectAnswers/a.totalQuestions)*avgTimeA;
+        double priorityB=(b.totalCorrectAnswers/b.totalQuestions)*avgTimeB;
         return priorityA < priorityB; });
 
     // Display the leaderboard
