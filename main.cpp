@@ -24,8 +24,89 @@ void take_quiz(string email, string name, string user_role, int user_participati
 vector<string> split(const string &s, const string &delimiter);
 void leaderboard();
 void my_history(string email);
+int add_question(string email, int new_add_count);
 
 // all function definition
+int add_question(string email, int new_add_count)
+{
+    cout << "*************************************************" << endl;
+    cout << "                 Add New Question                " << endl;
+    cout << "*************************************************" << endl;
+    string question, op1, op2, op3, op4;
+    int ans;
+    cout << "Question: ";
+    cin.ignore();
+    getline(cin, question);
+    cout << "1. ";
+    getline(cin, op1);
+    cout << "2. ";
+    getline(cin, op2);
+    cout << "3. ";
+    getline(cin, op3);
+    cout << "4. ";
+    getline(cin, op4);
+    cout << "Enter correct option number: ";
+    cin >> ans;
+
+    ofstream quiz("quiz.txt", ios::app);
+    if (quiz.is_open())
+    {
+        quiz << email << "|||" << question << "|||" << op1 << "|||" << op2 << "|||" << op3 << "|||" << op4 << "|||" << ans << endl;
+
+        ifstream user_file("users.txt");
+        vector<string> users;
+        string user_line;
+        int added_count = 0;
+
+        // Read all users and find the current user
+        while (getline(user_file, user_line))
+        {
+            if (user_line.find(email) == 0)
+            {
+                int last_comma = user_line.rfind(',');
+                added_count = stoi(user_line.substr(last_comma + 1)) + 1;
+                user_line = user_line.substr(0, last_comma + 1) + to_string(added_count);
+            }
+            users.push_back(user_line);
+        }
+        user_file.close();
+
+        // Write the updated user data to the file
+        ofstream user_file_out("users.txt");
+        for (const auto &u : users)
+        {
+            user_file_out << u << endl;
+        }
+        user_file_out.close();
+        cout << "----------Question Added Successfully----------" << endl;
+        new_add_count++;
+    }
+    quiz.close();
+    cout << "1. Add Another Question" << endl;
+    cout << "0. Back to Home" << endl;
+    int option;
+    while (true)
+    {
+        cout << "Choose option: ";
+        cin >> option;
+        if (option == 1)
+        {
+            clear_screen();
+            new_add_count = add_question(email, new_add_count);
+            break;
+        }
+        else if (option == 0)
+        {
+            clear_screen();
+            break;
+        }
+        else
+        {
+            cout << "Please choose a valid option." << endl;
+        }
+    }
+    return new_add_count;
+}
 struct LeaderboardEntry
 {
     string email;
@@ -126,14 +207,13 @@ void leaderboard()
         leaderboard_data.push_back(entry.second);
     }
 
-    // Sort the leaderboard data based on average time per question (ascending order)
     sort(leaderboard_data.begin(), leaderboard_data.end(), [](const LeaderboardEntry &a, const LeaderboardEntry &b)
          {
         double avgTimeA = (a.totalQuestions > 0) ? static_cast<double>(a.totalDuration) / a.totalQuestions : numeric_limits<double>::max();
         double avgTimeB = (b.totalQuestions > 0) ? static_cast<double>(b.totalDuration) / b.totalQuestions : numeric_limits<double>::max();
-        double priorityA=(a.totalCorrectAnswers/a.totalQuestions)*avgTimeA;
-        double priorityB=(b.totalCorrectAnswers/b.totalQuestions)*avgTimeB;
-        return priorityA < priorityB; });
+        double priorityA=(a.totalCorrectAnswers/a.totalQuestions)/avgTimeA;
+        double priorityB=(b.totalCorrectAnswers/b.totalQuestions)/avgTimeB;
+        return priorityA > priorityB; });
 
     // Display the leaderboard
     cout << "************************************************************" << endl;
@@ -194,7 +274,7 @@ void take_quiz(string email, string name, string user_role, int user_participati
     shuffle(questions.begin(), questions.end(), eng);
 
     // Select the first 20 questions
-    vector<string> selected_questions(questions.begin(), questions.begin() + 2);
+    vector<string> selected_questions(questions.begin(), questions.begin() + 5);
 
     int total_score = 0;
     int total_questions = selected_questions.size();
@@ -393,6 +473,62 @@ void logged_in_user(string email, string name, string user_role, int user_partic
 }
 void logged_in_admin(string email, string name, string user_role, int added_quiz_count)
 {
+    cout << "************************************************" << endl;
+    cout << "            Welcome back " << name << endl;
+    cout << "            Email: " << email << endl;
+    cout << "            Role: " << user_role << endl;
+    cout << "            Added Questions: " << added_quiz_count << endl;
+    cout << "************************************************" << endl;
+
+    cout << endl;
+    cout << "1. Add Question" << endl;
+    cout << "2. Leaderboard" << endl;
+    cout << "3. Sign Out" << endl
+         << endl;
+    int option;
+    while (true)
+    {
+        cout << "Choose option: ";
+        cin >> option;
+        if (option == 1)
+        {
+            clear_screen();
+            int new_add_count = add_question(email, 0);
+            logged_in_admin(email, name, user_role, added_quiz_count + new_add_count);
+            break;
+        }
+        else if (option == 2)
+        {
+            clear_screen();
+            leaderboard();
+            while (true)
+            {
+                cout << endl
+                     << endl
+                     << "Press 0 for home screen: ";
+                int x;
+                cin >> x;
+                if (x == 0)
+                {
+                    clear_screen();
+                    logged_in_admin(email, name, user_role, added_quiz_count);
+                    break;
+                }
+            }
+            break;
+        }
+        else if (option == 3)
+        {
+            clear_screen();
+            welcome_message();
+            home_options();
+            break;
+        }
+        else
+        {
+            cout << "Please choose a valid option...";
+        }
+    }
 }
 void login_user()
 {
